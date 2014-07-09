@@ -1,7 +1,7 @@
 {
   "name": "hyperglue2",
   "version": "0.0.0",
-  "description": "minimalist dom-only hyperglue implementation",
+  "description": "a hyperglue implementation",
   "main": "index.js",
   "dependencies": {
     "domify": "^1.2.2"
