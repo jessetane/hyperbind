@@ -1,14 +1,14 @@
 # hyperglue2
 a [hyperglue](http://github.com/substack/hyperglue) implementation (dom-only)
 
-## why
-The best HTML templates are just HTML.
+if you're not familiar with hyperglue, it's a templating engine that accepts vanilla html strings or dom elements as templates. this is nice because you don't have to learn any fancy new languages and you can update templates you've already rendered as many times as you want.
 
-I really like the original hyperglue library but I find the ":first" selector confusing and array updates don't work. details below:
+## why
+I really like the original hyperglue library but I find the ":first" selector confusing and array updates don't work - details below. if you've never used the original you can skip to [how](#how)
 
 ### the ":first" selector
 the first thing you're likely to try with hyperglue is probably something like: `hg('<div></div>', 'hello world')` which of course doesn't work, because to select outer elements you actually need to use the ":first" selector like so: `hg('<div></div>', { ':first': 'hello world' })`. hyperglue2 enables outer element selection by default, which makes rendering a bit more obvious:
-```
+```javascript
 // original hyperglue
 hg('<ul><li></li></ul>', { li: [ { ':first': 1 }, { ':first': 2 }, { ':first': 3 } ] });
 // <ul>
@@ -29,7 +29,7 @@ hg('<ul><li></li></ul>', { li: [ 1, 2, 3 ] });
 ### array updates
 
 updating an existing dom element (instead of generating a new one from a string) is possible with the original hyperglue, but it doesn't work for arrays. consider:
-```
+```javascript
 // original hyperglue
 
 // first render
@@ -61,9 +61,10 @@ hg(el, { li: [ 'a', 'b', 'c' ] });
 // </ul>
 ```
 
-## how
+## <a name="how"></a>how
+
 ### set innerText
-```
+```javascript
 var htmlstring = '<div></div>';
 hg(htmlstring, 'hello');
 // or 
@@ -72,27 +73,27 @@ hg(htmlstring, { _text: 'hello' });
 ```
 
 ### make updates
-```
+```javascript
 // note: 'el' is a dom element, not a string
 hg(el, 'hello world');
 // <div>hello world</div>
 ```
 
 ### innerHTML
-```
+```javascript
 hg(el, { _html: '<input>' });
 // <div><input></div>
 ```
 
 ### attributes
-```
+```javascript
 hg(el, { input: { _attr: { value: 42 }}});
 // <div><input value="42"></div>
 ```
 
 ### arrays
-```
-hg('<ul><li></li></ul>', { li: [ 1, 2, 3 ] });
+```javascript
+var el = hg('<ul><li></li></ul>', { li: [ 1, 2, 3 ] });
 // <ul>
 //   <li>1</li>
 //   <li>2</li>
@@ -101,8 +102,8 @@ hg('<ul><li></li></ul>', { li: [ 1, 2, 3 ] });
 ```
 
 ### array updates
-```
-hg('<ul><li></li></ul>', { li: [ 1, 'the end' ] });
+```javascript
+hg(el, { li: [ 1, 'the end' ] });
 // <ul>
 //   <li>1</li>
 //   <li>the end</li>
