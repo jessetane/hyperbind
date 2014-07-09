@@ -4,10 +4,15 @@ a [hyperglue](http://github.com/substack/hyperglue) implementation (dom-only)
 if you're not familiar with hyperglue, it's a templating engine that accepts vanilla html strings or dom elements as templates. this is nice because you don't have to learn any fancy new languages and you can update templates you've already rendered as many times as you want.
 
 ## why
-I really like the original hyperglue library but I find the ":first" selector confusing and array updates don't work - details below. if you've never used the original you can skip to [how](#how)
+I really like the original hyperglue library, but!
+* the ":first" selector is confusing
+* array updates don't work
+* can't remove attributes
+
+detailed explanations below. if you've never used the original you can skip to [how](#how).
 
 ### the ":first" selector
-the first thing you're likely to try with hyperglue is probably something like: `hg('<div></div>', 'hello world')` which of course doesn't work, because to select outer elements you actually need to use the ":first" selector like so: `hg('<div></div>', { ':first': 'hello world' })`. hyperglue2 enables outer element selection by default, which makes rendering a bit more obvious:
+the first thing you're likely to try with hyperglue is probably something along the lines of: `hg('<div></div>', 'hello world')` which of course doesn't work, because to select outer elements you actually need to use the ":first" selector like so: `hg('<div></div>', { ':first': 'hello world' })`. hyperglue2 does away with ":first" and just assumes you are always talking about the outermost element you've selected, which makes mapping your data a little more obvious:
 ```javascript
 // original hyperglue
 hg('<ul><li></li></ul>', { li: [ { ':first': 1 }, { ':first': 2 }, { ':first': 3 } ] });
@@ -37,8 +42,6 @@ var el = hg('<ul><li></li></ul>', { li: [ { ':first': 1 }, { ':first': 2 }, { ':
 
 // update
 hg(el, { li: [ { ':first': 'a' }, { ':first': 'b' }, { ':first': 'c' } ] });
-
-console.log(el);
 // <ul>
 //   <li>a</li>
 //   <li>b</li>
@@ -61,14 +64,22 @@ hg(el, { li: [ 'a', 'b', 'c' ] });
 // </ul>
 ```
 
-## <a name="how"></a>how
+### attribute removal
+
+some html attributes like "checked" or "selected" can't be set to falsy values, so the only way to disable them is to completely remove the attribute. you can remove attributes with hyperglue2 by setting the attribute data value to `null`.
+```javascript
+hg('<input type="checkbox" checked>', { _attr: { checked: null }});
+// <input type="checkbox">
+```
+
+## how
 
 ### set innerText
 ```javascript
-var htmlstring = '<div></div>';
-hg(htmlstring, 'hello');
+var hg = require('hyperglue2');
+var el = hg('<div></div>', 'hello');
 // or 
-hg(htmlstring, { _text: 'hello' });
+var el = hg('<div></div>', { _text: 'hello' });
 // <div>hello</div>
 ```
 
@@ -87,7 +98,9 @@ hg(el, { _html: '<input>' });
 
 ### attributes
 ```javascript
-hg(el, { input: { _attr: { value: 42 }}});
+hg(el, { input: { _attr: { name: 'field', value: 42 }}}); // add
+// <div><input name="field" value="42"></div>
+hg(el, { input: { _attr: { name: null }}});               // remove
 // <div><input value="42"></div>
 ```
 
@@ -111,10 +124,10 @@ hg(el, { li: [ 1, 'the end' ] });
 ```
 
 ## notes
+* original [hyperglue](http://github.com/substack/hyperglue) by [substack](http://github.com/substack)
 * html compilation via [domify](http://github.com/component/domify)
 * dom element selection via `document.querySelectorAll()`
-* array re-rendering is achieved by caching a "blueprint" row on the parent element
-* the original: [hyperglue](http://github.com/substack/hyperglue)
+* array re-rendering is achieved by caching a "blueprint" on the parent element
 
 ## license
 WTFPL
