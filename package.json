@@ -1,0 +1,23 @@
+{
+  "name": "hyperglue2",
+  "version": "0.0.0",
+  "description": "minimalist dom-only hyperglue implementation",
+  "main": "index.js",
+  "dependencies": {
+    "domify": "^1.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jessetane/hyperglue2"
+  },
+  "keywords": [
+    "hyperglue",
+    "dom",
+    "reactive",
+    "render",
+    "html",
+    "templates"
+  ],
+  "author": "Jesse Tane <jesse.tane@gmail.com>",
+  "license": "WTFPL"
+}
