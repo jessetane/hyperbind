@@ -1,7 +1,5 @@
 var domify = require('domify');
 
-window.hyperglue = hyperglue;
-
 module.exports = hyperglue;
 
 function hyperglue(el, data) {
