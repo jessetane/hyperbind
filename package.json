@@ -1,6 +1,6 @@
 {
   "name": "hyperglue2",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "a hyperglue implementation",
   "main": "index.js",
   "dependencies": {

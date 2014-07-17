@@ -10,7 +10,7 @@ function hyperglue(el, data) {
   }
 
   // no data so we're done
-  if (!data) return el;
+  if (!data && data !== '') return el;
 
   if (typeof data === 'object') {
     for (var selector in data) {
