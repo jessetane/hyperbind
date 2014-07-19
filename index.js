@@ -2,11 +2,16 @@ var domify = require('domify');
 
 module.exports = hyperglue;
 
-function hyperglue(el, data) {
+function hyperglue(el, data, opts) {
 
   // if 'el' is an html string, turn it into dom elements
   if (typeof el === 'string') {
     el = domify(el);
+  }
+
+  // boundaries must be collect at the highest level possible
+  if (opts && opts.boundary && typeof opts.boundary !== 'object') {
+    opts.boundary = el.querySelectorAll(opts.boundary);
   }
 
   // no data so we're done
@@ -60,6 +65,18 @@ function hyperglue(el, data) {
         matches = matches || el.querySelectorAll(selector);
         for (var i=0; i<matches.length; i++) {
           var match = matches[i];
+
+          // make sure match is not beyond a boundary
+          if (opts.boundary) {
+            var withinBoundary = true;
+            for (var n=0; n<opts.boundary.length; n++) {
+              if (opts.boundary[n].contains(match)) {
+                withinBoundary = false;
+                break;
+              }
+            }
+            if (!withinBoundary) continue;
+          }
 
           // render arrays
           if (isArray) {
