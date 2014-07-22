@@ -3,6 +3,7 @@ var domify = require('domify');
 module.exports = hyperglue;
 
 function hyperglue(el, data, opts) {
+  if (!opts) opts = {};
 
   // if 'el' is an html string, turn it into dom elements
   if (typeof el === 'string') {
@@ -10,7 +11,7 @@ function hyperglue(el, data, opts) {
   }
 
   // boundaries must be collect at the highest level possible
-  if (opts && opts.boundary && typeof opts.boundary !== 'object') {
+  if (opts.boundary && typeof opts.boundary !== 'object') {
     opts.boundary = el.querySelectorAll(opts.boundary);
   }
 
