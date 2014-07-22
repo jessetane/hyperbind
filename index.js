@@ -18,7 +18,7 @@ function hyperglue(el, data) {
 
       // plain text
       if (selector === '_text') {
-        el.innerText = value;
+        el.textContent = value;
       }
 
       // raw html
@@ -101,7 +101,7 @@ function hyperglue(el, data) {
     }
   }
   else {
-    el.innerText = data;
+    el.textContent = data;
   }
 
   return el;
