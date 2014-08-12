@@ -1,18 +1,76 @@
 # hyperglue2
-a [hyperglue](http://github.com/substack/hyperglue) implementation (dom-only)
+A [hyperglue](http://github.com/substack/hyperglue) implementation (DOM-only).
 
-if you're not familiar with hyperglue, it's a templating engine that accepts vanilla html strings or dom elements as templates. this is nice because you don't have to learn any fancy new languages and you can update templates you've already rendered as many times as you want.
+[![npm](http://img.shields.io/npm/v/hyperglue2.svg?style=flat)](http://npmjs.org/package/hyperglue2)
+[![downloads](https://img.shields.io/npm/dm/hyperglue2.svg?style=flat)](http://npmjs.org/package/hyperglue2)
 
-## why
-I really like the original hyperglue library, but!
-* the ":first" selector is confusing
+## Why
+Hyperglue is an awesome templating engine that accepts vanilla html strings or DOM elements as templates. This is nice because you don't have to learn any fancy new languages and you can update templates you've already rendered without recompiling any HTML.
+
+Although the concept behind this library is faithful to the original, the API is not. More about this under [Notes](#Notes).
+
+## How
+
+### Set textContent
+```javascript
+var hg = require('hyperglue2');
+var el = hg('<div></div>', 'hello');
+// or 
+var el = hg('<div></div>', { _text: 'hello' });
+// <div>hello</div>
+```
+
+### Make updates
+```javascript
+// note: 'el' is a dom element, not a string
+hg(el, 'hello world');
+// <div>hello world</div>
+```
+
+### InnerHTML
+```javascript
+hg(el, { _html: '<input>' });
+// <div><input></div>
+```
+
+### Attributes
+```javascript
+hg(el, { input: { _attr: { name: 'field', value: 42 }}}); // add
+// <div><input name="field" value="42"></div>
+hg(el, { input: { _attr: { name: null }}});               // remove
+// <div><input value="42"></div>
+```
+
+### Arrays
+```javascript
+var el = hg('<ul><li></li></ul>', { li: [ 1, 2, 3 ] });
+// <ul>
+//   <li>1</li>
+//   <li>2</li>
+//   <li>3</li>
+// </ul>
+```
+
+### Array updates
+```javascript
+hg(el, { li: [ 1, 'the end' ] });
+// <ul>
+//   <li>1</li>
+//   <li>the end</li>
+// </ul>
+```
+
+## Notes
+So, I really like the original hyperglue library, but!
+* the ":first" selector confused me
 * array updates don't work
 * can't remove attributes
 
-detailed explanations below. if you've never used the original you can skip to [how](#how).
+Detailed explanations below:
 
-### the ":first" selector
-the first thing you're likely to try with hyperglue is probably something along the lines of: `hg('<div></div>', 'hello world')` which of course doesn't work, because to select outer elements you actually need to use the ":first" selector like so: `hg('<div></div>', { ':first': 'hello world' })`. hyperglue2 does away with ":first" and just assumes you are always talking about the outermost element you've selected, which makes mapping your data a little more obvious:
+### The ":first" selector
+The first thing you're likely to try with hyperglue is probably something along the lines of: `hg('<div></div>', 'hello world')` which of course doesn't work, because to select outer elements you actually need to use the ":first" selector like so: `hg('<div></div>', { ':first': 'hello world' })`. Hyperglue2 does away with ":first" and just assumes you are always talking about the outermost element you've selected, this sacrifices attribute manipulation ease in favor of a more obvious way to set inner content:
+
 ```javascript
 // original hyperglue
 hg('<ul><li></li></ul>', { li: [ { ':first': 1 }, { ':first': 2 }, { ':first': 3 } ] });
@@ -31,9 +89,10 @@ hg('<ul><li></li></ul>', { li: [ 1, 2, 3 ] });
 // </ul>
 ```
 
-### array updates
+### Array updates
 
-updating an existing dom element (instead of generating a new one from a string) is possible with the original hyperglue, but it doesn't work for arrays. consider:
+Updating an existing dom element (instead of generating a new one from a string) is possible with the original hyperglue, but it doesn't work for arrays. Consider:
+
 ```javascript
 // original hyperglue
 
@@ -54,7 +113,7 @@ hg(el, { li: [ { ':first': 'a' }, { ':first': 'b' }, { ':first': 'c' } ] });
 //   <li>c</li>
 // </ul>
 
-// works in hyperglue2
+// Works in hyperglue2
 var el = hg('<ul><li></li></ul>', { li: [ 1, 2, 3 ] })
 hg(el, { li: [ 'a', 'b', 'c' ] });
 // <ul>
@@ -64,70 +123,28 @@ hg(el, { li: [ 'a', 'b', 'c' ] });
 // </ul>
 ```
 
-### attribute removal
+### Attribute removal
 
-some html attributes like "checked" or "selected" can't be set to falsy values, so the only way to disable them is to completely remove the attribute. you can remove attributes with hyperglue2 by setting the attribute data value to `null`.
+Some html attributes like "checked" or "selected" can't be set to falsy values, so the only way to disable them is to completely remove the attribute. You can remove attributes with hyperglue2 by setting the attribute data value to `null`.
 ```javascript
 hg('<input type="checkbox" checked>', { _attr: { checked: null }});
 // <input type="checkbox">
 ```
 
-## how
+## Releases
+The latest stable release is published to [npm](http://npmjs.org/package/hyperglue2). Below is an abbreviated changelog:
 
-### set innerText
-```javascript
-var hg = require('hyperglue2');
-var el = hg('<div></div>', 'hello');
-// or 
-var el = hg('<div></div>', { _text: 'hello' });
-// <div>hello</div>
-```
+* [1.0.x](https://github.com/jessetane/hyperglue2/archive/1.0.0.tar.gz)
+  * Added ability to pass DOM elements as data
+  * Added "boundary" option
 
-### make updates
-```javascript
-// note: 'el' is a dom element, not a string
-hg(el, 'hello world');
-// <div>hello world</div>
-```
+* [0.0.x](https://github.com/jessetane/hyperglue2/archive/0.0.3.tar.gz)
+  * Prototype
 
-### innerHTML
-```javascript
-hg(el, { _html: '<input>' });
-// <div><input></div>
-```
+## License
+Copyright © 2014 Jesse Tane <jesse.tane@gmail.com>
 
-### attributes
-```javascript
-hg(el, { input: { _attr: { name: 'field', value: 42 }}}); // add
-// <div><input name="field" value="42"></div>
-hg(el, { input: { _attr: { name: null }}});               // remove
-// <div><input value="42"></div>
-```
+This work is free. You can redistribute it and/or modify it under the
+terms of the [WTFPL](http://www.wtfpl.net/txt/copying).
 
-### arrays
-```javascript
-var el = hg('<ul><li></li></ul>', { li: [ 1, 2, 3 ] });
-// <ul>
-//   <li>1</li>
-//   <li>2</li>
-//   <li>3</li>
-// </ul>
-```
-
-### array updates
-```javascript
-hg(el, { li: [ 1, 'the end' ] });
-// <ul>
-//   <li>1</li>
-//   <li>the end</li>
-// </ul>
-```
-
-## notes
-* original [hyperglue](http://github.com/substack/hyperglue) by [substack](http://github.com/substack)
-* html compilation via [domify](http://github.com/component/domify)
-* dom element selection via `document.querySelectorAll()`
-* array re-rendering is achieved by caching a "blueprint" on the parent element
-
-## license
-WTFPL
+This work is provided "as is" without warranty of any kind, either express or implied, including without limitation any implied warranties of condition, uninterrupted use, merchantability, fitness for a particular purpose, or non-infringement.
