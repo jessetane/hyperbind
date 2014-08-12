@@ -18,7 +18,16 @@ function hyperglue(el, data, opts) {
   // no data so we're done
   if (!data && data !== '') return el;
 
-  if (typeof data === 'object') {
+  // if data is an HTML element just replace whatever was there with it
+  if (data instanceof Element) {
+    while (el.childNodes.length) {
+      el.removeChild(el.firstChild);
+    }
+    el.appendChild(data);
+  }
+
+  // elsewise assume other object types are hashes
+  else if (typeof data === 'object') {
     for (var selector in data) {
       var value = data[selector];
 
