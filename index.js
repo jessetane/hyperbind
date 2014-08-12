@@ -10,7 +10,7 @@ function hyperglue(el, data, opts) {
     el = domify(el);
   }
 
-  // boundaries must be collect at the highest level possible
+  // boundaries must be collected at the highest level possible
   if (opts.boundary && typeof opts.boundary !== 'object') {
     opts.boundary = el.querySelectorAll(opts.boundary);
   }
