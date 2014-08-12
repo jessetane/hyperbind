@@ -60,6 +60,17 @@ hg(el, { li: [ 1, 'the end' ] });
 // </ul>
 ```
 
+### Respect element boundaries
+``` javascript
+hg('<section><h1></h1><section><h1></h1></section></section>', { h1: 'the title' }, { boundary: 'section' });
+// <section>
+//   <h1>the title</h1>
+//   <section>
+//     <h1><h1>
+//   </section>
+// </section>
+```
+
 ## Notes
 So, I really like the original hyperglue library, but!
 * the ":first" selector confused me
