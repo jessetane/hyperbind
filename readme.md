@@ -2,7 +2,6 @@
 A [hyperglue](http://github.com/substack/hyperglue) implementation (DOM-only).
 
 [![npm](http://img.shields.io/npm/v/hyperglue2.svg?style=flat)](http://npmjs.org/package/hyperglue2)
-[![downloads](https://img.shields.io/npm/dm/hyperglue2.svg?style=flat)](http://npmjs.org/package/hyperglue2)
 
 ## Why
 Hyperglue is an awesome templating engine that accepts vanilla html strings or DOM elements as templates. This is nice because you don't have to learn any fancy new languages and you can update templates you've already rendered without recompiling any HTML.
@@ -66,7 +65,7 @@ hg('<section><h1></h1><section><h1></h1></section></section>', { h1: 'the title'
 // <section>
 //   <h1>the title</h1>
 //   <section>
-//     <h1><h1>
+//     <h1></h1>
 //   </section>
 // </section>
 ```
