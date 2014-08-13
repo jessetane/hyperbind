@@ -6,7 +6,7 @@ A [hyperglue](http://github.com/substack/hyperglue) implementation (DOM-only).
 ## Why
 Hyperglue is an awesome templating engine that accepts vanilla html strings or DOM elements as templates. This is nice because you don't have to learn any fancy new languages and you can update templates you've already rendered without recompiling any HTML.
 
-Although the concept behind this library is faithful to the original, the API is not. More about this under [Notes](#Notes).
+Although the concept behind this library is faithful to the original, the API is not. More about this under [Notes](#notes).
 
 ## How
 
