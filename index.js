@@ -41,6 +41,14 @@ function hyperglue(el, data, opts) {
         el.innerHTML = value;
       }
 
+      // dom element
+      else if (selector === '_element') {
+        while (el.childNodes.length) {
+          el.removeChild(el.firstChild);
+        }
+        el.appendChild(value);
+      }
+
       // attribute setting
       else if (selector === '_attr') {
         for (var attr in value) {
