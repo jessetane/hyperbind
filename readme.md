@@ -40,6 +40,17 @@ hg(el, { input: { _attr: { name: null }}});               // remove
 // <div><input value="42"></div>
 ```
 
+### Elements
+```javascript
+var el = hg('<div></div>');
+var header = hg('<h1></h1>');
+var bold = hg('<b>elementary</b>');
+
+hg(el, header);                     // element literal
+hg(el, { h1: { _element: bold }});  // element selector
+// <div><h1><b>elementary</b></h1></div>
+```
+
 ### Arrays
 ```javascript
 var el = hg('<ul><li></li></ul>', { li: [ 1, 2, 3 ] });
