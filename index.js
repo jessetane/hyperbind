@@ -75,10 +75,10 @@ function hyperglue(el, data, opts) {
         var needsCache = false;
         var matches = null;
         if (isArray) {
-          el.hyperglueArrays = el.hyperglueArrays || {};
-          matches = el.hyperglueArrays[selector];
+          el._hyperglueArrays = el._hyperglueArrays || {};
+          matches = el._hyperglueArrays[selector];
           if (!matches) {
-            el.hyperglueArrays[selector] = [];
+            el._hyperglueArrays[selector] = [];
             needsCache = true;
           }
         }
@@ -108,7 +108,7 @@ function hyperglue(el, data, opts) {
             // cache blueprint node
             if (needsCache && needsCache !== match.parent) {
               needsCache = match.parentNode;
-              el.hyperglueArrays[selector].push({
+              el._hyperglueArrays[selector].push({
                 node: match.cloneNode(true),
                 parentNode: match.parentNode,
                 cloneNode: function() {
