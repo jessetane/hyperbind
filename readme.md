@@ -155,6 +155,9 @@ hg('<input type="checkbox" checked>', { _attr: { checked: null }});
 ## Releases
 The latest stable release is published to [npm](http://npmjs.org/package/hyperglue2). Below is an abbreviated changelog:
 
+* [1.3.x](https://github.com/jessetane/hyperglue2/archive/1.3.0.tar.gz)
+  * Improved falsy value handling
+
 * [1.1.x](https://github.com/jessetane/hyperglue2/archive/1.1.0.tar.gz)
   * Added _element selector
 
