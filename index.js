@@ -16,7 +16,10 @@ function hyperglue(el, data, opts) {
   }
 
   // no data so we're done
-  if (!data && data !== '') return el;
+  if (data === undefined) return el;
+
+  // null should remove textContent
+  if (data === null) data = '';
 
   // if data is an HTML element just replace whatever was there with it
   if (data instanceof Element) {
