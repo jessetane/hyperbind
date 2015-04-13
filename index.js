@@ -66,6 +66,28 @@ function hyperglue(el, data, opts) {
         }
       }
 
+      // el.classList
+      else if (selector === '_class') {
+        var toAdd = []
+        var toRemove = []
+
+        for (var className in value) {
+          if (value[className]) {
+            toAdd.push(className)
+          } else {
+            toRemove.push(className)
+          }
+        }
+
+        for (var i in toAdd) {
+          el.classList.add(toAdd[i])
+        }
+
+        for (var i in toRemove) {
+          el.classList.remove(toRemove[i])
+        }
+      }
+
       // recursive
       else {
 
