@@ -40,11 +40,11 @@ hg(el, { input: { _attr: { name: null }}});               // remove
 // <div><input value="42"></div>
 ```
 
-### classList
+### ClassList
 ```javascript
 hg(el, { input: { _class: { hidden: true }}}); // add
 // <div><input class="my-input hidden"></div>
-hg(el, { input: { _class: { hidden: false }}}); // add
+hg(el, { input: { _class: { hidden: false }}}); // remove
 // <div><input class="my-input"></div>
 ```
 
