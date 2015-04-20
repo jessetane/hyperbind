@@ -163,7 +163,10 @@ hg('<input type="checkbox" checked>', { _attr: { checked: null }});
 ## Releases
 The latest stable release is published to [npm](http://npmjs.org/package/hyperglue2). Below is an abbreviated changelog:
 
-* [1.4.x](https://github.com/jessetane/hyperglue2/archive/1.4.0.tar.gz)
+* [1.5.x](https://github.com/jessetane/hyperglue2/archive/1.5.0.tar.gz)
+  * Don't use for-in loop as it doesn't work properly on arrays with unset indexes
+
+* [1.4.x](https://github.com/jessetane/hyperglue2/archive/1.4.1.tar.gz)
   * Add classList support via the `_class` selector
 
 * [1.3.x](https://github.com/jessetane/hyperglue2/archive/1.3.0.tar.gz)
