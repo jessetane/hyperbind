@@ -146,7 +146,7 @@ function hyperglue(el, data, opts) {
             }
 
             // render new rows
-            for (var n in value) {
+            for (var n=0; n<value.length; n++) {
               var item = value[n];
               parent.appendChild(hyperglue(match.cloneNode(true), item));
             }
