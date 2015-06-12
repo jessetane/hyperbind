@@ -44,6 +44,11 @@ function hyperglue(el, data, opts) {
         el.innerHTML = value;
       }
 
+      // value for form elements
+      else if (selector === '_value') {
+        el.value = value;
+      }
+
       // dom element
       else if (selector === '_element') {
         while (el.childNodes.length) {
