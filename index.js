@@ -46,7 +46,7 @@ function hyperglue(el, data, opts) {
 
       // value for form elements
       else if (selector === '_value') {
-        el.value = value;
+        el.value = value === undefined ? '' : value;
       }
 
       // dom element
