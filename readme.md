@@ -40,6 +40,14 @@ hg(el, { input: { _attr: { name: null }}});               // remove
 // <div><input value="42"></div>
 ```
 
+### Form element value (after user input, the attribute stops working)
+```javascript
+hg(el, { input: { _value: 23 }});              // add
+// <div><input value="42"></div>               // but display and js will show 23
+hg(el, { input: { _value: null }});            // remove
+// <div><input value="42"></div>               // but display and js will show ""
+```
+
 ### ClassList
 ```javascript
 hg(el, { input: { _class: { hidden: true }}}); // add
@@ -162,6 +170,9 @@ hg('<input type="checkbox" checked>', { _attr: { checked: null }});
 
 ## Releases
 The latest stable release is published to [npm](http://npmjs.org/package/hyperglue2). Below is an abbreviated changelog:
+
+* [1.6.x](https://github.com/jessetane/hyperglue2/archive/1.6.0.tar.gz)
+  * Add _value selector for working with form inputs (after user input, the value attribute and textContent become disconnected from the actual DOM element - why?)
 
 * [1.5.x](https://github.com/jessetane/hyperglue2/archive/1.5.0.tar.gz)
   * Don't use for-in loop as it doesn't work properly on arrays with unset indexes
