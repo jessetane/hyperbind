@@ -171,6 +171,9 @@ hg('<input type="checkbox" checked>', { _attr: { checked: null }});
 ## Releases
 The latest stable release is published to [npm](http://npmjs.org/package/hyperglue2). Below is an abbreviated changelog:
 
+* [2.x](https://github.com/jessetane/hyperglue2/archive/2.0.0.tar.gz)
+  * Explictly passing null values now removes elements matched by the given selector. Clearing textContent can be done by passing an empty string.
+
 * [1.6.x](https://github.com/jessetane/hyperglue2/archive/1.6.0.tar.gz)
   * Add _value selector for working with form inputs (value attribute and textContent only work for setting an [initial value](http://www.w3.org/TR/html401/interact/forms.html#initial-value))
 
