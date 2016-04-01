@@ -70,8 +70,8 @@ function hyperglue(el, data, opts) {
               val === undefined) {
             el.removeAttribute(attr);
           }
-          else {
-            el.setAttribute(attr, value[attr]);
+          else if (el.getAttribute(attr) !== val) {
+            el.setAttribute(attr, val);
           }
         }
       }
