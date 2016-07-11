@@ -2,7 +2,6 @@
   "name": "hyperglue2",
   "version": "2.0.1",
   "description": "A hyperglue implementation",
-  "main": "index.js",
   "dependencies": {
     "domify": "^1.2.2"
   },
@@ -19,5 +18,5 @@
     "url": "https://github.com/jessetane/hyperglue2"
   },
   "author": "Jesse Tane <jesse.tane@gmail.com>",
-  "license": "WTFPL"
+  "license": "MIT"
 }

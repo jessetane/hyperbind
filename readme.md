@@ -171,6 +171,9 @@ hg('<input type="checkbox" checked>', { _attr: { checked: null }});
 ## Releases
 The latest stable release is published to [npm](http://npmjs.org/package/hyperglue2). Below is an abbreviated changelog:
 
+* [3.x](https://github.com/jessetane/hyperglue2/archive/3.0.0.tar.gz)
+  * Switch to MIT license.
+
 * [2.x](https://github.com/jessetane/hyperglue2/archive/2.0.0.tar.gz)
   * Explictly passing null values now removes elements matched by the given selector. Clearing textContent can be done by passing an empty string.
 
@@ -197,9 +200,4 @@ The latest stable release is published to [npm](http://npmjs.org/package/hypergl
   * Prototype
 
 ## License
-Copyright © 2014 Jesse Tane <jesse.tane@gmail.com>
-
-This work is free. You can redistribute it and/or modify it under the
-terms of the [WTFPL](http://www.wtfpl.net/txt/copying).
-
-This work is provided "as is" without warranty of any kind, either express or implied, including without limitation any implied warranties of condition, uninterrupted use, merchantability, fitness for a particular purpose, or non-infringement.
+MIT
