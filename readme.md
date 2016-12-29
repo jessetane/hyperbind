@@ -48,6 +48,11 @@ hg(el, { input: { _value: null }});            // remove
 // <div><input value="42"></div>               // but display and js will show ""
 ```
 
+### Generic properties
+```javascript
+hg(el, { input: { _prop: { checked: true }}}); // sets .checked directly on element
+```
+
 ### ClassList
 ```javascript
 hg(el, { input: { _class: { hidden: true }}}); // add

@@ -98,6 +98,13 @@ function hyperglue(el, data, opts) {
         }
       }
 
+      // generic properties
+      else if (selector === '_prop') {
+        for (var prop in value) {
+          el[prop] = value[prop];
+        }
+      }
+
       // recursive
       else {
 
