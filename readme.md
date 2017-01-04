@@ -72,6 +72,24 @@ hg(el, { h1: { _element: bold }});  // element selector
 // <div><h1><b>elementary</b></h1></div>
 ```
 
+### Singletons
+```javascript
+var src = 'movie.avi'
+var opts = {
+  video: {
+    _single: src,
+    _attr: {
+      src: src
+    }
+  }
+}
+var el = hg('<div><video></video></div>', opts);
+// <div><video src="movie.avi"></video></div>
+el.querySelector('video').setAttribute('data-single', '')
+el = hg('<div><video></video></div>', opts);
+// <div><video src="movie.avi" data-single></video></div>
+```
+
 ### Arrays
 ```javascript
 var el = hg('<ul><li></li></ul>', { li: [ 1, 2, 3 ] });

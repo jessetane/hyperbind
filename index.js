@@ -1,4 +1,5 @@
 var domify = require('domify');
+var singletons = {}
 
 module.exports = hyperglue;
 
@@ -36,7 +37,27 @@ function hyperglue(el, data, opts) {
 
   // elsewise assume other object types are hashes
   else if (typeof data === 'object') {
+
+    // replace singletons if necessary
+    var cacheKey = data._single;
+    if (cacheKey) {
+      var cached = singletons[cacheKey];
+      if (cached && el !== cached) {
+        el.parentNode.insertBefore(cached, el);
+        el.parentNode.removeChild(el);
+        el = cached;
+      } else {
+        singletons[cacheKey] = el;
+      }
+    }
+
     for (var selector in data) {
+
+      // skip singletons
+      if (selector === '_single') {
+        continue;
+      }
+
       var value = data[selector];
 
       // plain text
