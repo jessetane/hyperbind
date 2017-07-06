@@ -63,7 +63,7 @@ function hyperbind (el, data, opts) {
         case '$list':
           var items = value.items
           var key = value.key
-          var createElement = value.createElement
+          var CreateElement = value.createElement
           var each = value.each
           var children = el.children
           var existing = {}
@@ -92,19 +92,19 @@ function hyperbind (el, data, opts) {
               i--
             }
           }
-          for (var i = 0; i < items.length; i++) {
-            var item = items[i]
-            var uid = key ? item[key] : item
+          for (i = 0; i < items.length; i++) {
+            item = items[i]
+            uid = key ? item[key] : item
             var existingChild = existing[uid]
             if (!existingChild) {
-              existingChild = new createElement(item, i)
+              existingChild = new CreateElement(item, i)
               if (key) {
                 existingChild._listItemKey = uid
               } else {
                 existingChild.textContent = item
               }
             }
-            var child = children[i]
+            child = children[i]
             if (child !== existingChild) {
               el.insertBefore(existingChild, child)
             }
@@ -115,14 +115,14 @@ function hyperbind (el, data, opts) {
           break
         default:
           var matches = el.querySelectorAll(selector)
-          for (var i = 0; i < matches.length; i++) {
+          for (i = 0; i < matches.length; i++) {
             var match = matches[i]
             if (opts.boundary) {
               if (typeof opts.boundary !== 'object') {
                 opts.boundary = el.querySelectorAll(opts.boundary)
               }
               var withinBoundary = true
-              for (var n = 0; n < opts.boundary.length; n++) {
+              for (n = 0; n < opts.boundary.length; n++) {
                 var boundary = opts.boundary[n]
                 var parent = match.parentNode
                 while (parent !== el && parent !== boundary) {
@@ -142,7 +142,7 @@ function hyperbind (el, data, opts) {
       }
     }
   } else {
-    el.textContent = data;
+    el.textContent = data
   }
   return el
 }

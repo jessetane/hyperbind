@@ -1,17 +1,17 @@
 var tape = require('tape')
-var hg = require('../')
+var hb = require('../')
 
 var body = document.body
 
 tape('set text', t => {
   t.plan(1)
-  hg(body, 'hello world')
+  hb(body, 'hello world')
   t.equal(body.textContent, 'hello world')
 })
 
 tape('set html', t => {
   t.plan(2)
-  hg(body, {
+  hb(body, {
     $html: '<h1>wow</h1>'
   })
   t.equal(body.firstElementChild.tagName, 'H1')
@@ -20,7 +20,7 @@ tape('set html', t => {
 
 tape('set attributes', t => {
   t.plan(1)
-  hg(body, {
+  hb(body, {
     $attr: {
       beep: 'boop'
     }
@@ -30,7 +30,7 @@ tape('set attributes', t => {
 
 tape('remove undefined attributes', t => {
   t.plan(1)
-  hg(body, {
+  hb(body, {
     $attr: {
       beep: undefined
     }
@@ -40,7 +40,7 @@ tape('remove undefined attributes', t => {
 
 tape('add classes', t => {
   t.plan(1)
-  hg(body, {
+  hb(body, {
     $class: {
       a: true
     }
@@ -50,7 +50,7 @@ tape('add classes', t => {
 
 tape('remove classes', t => {
   t.plan(1)
-  hg(body, {
+  hb(body, {
     $class: {
       a: false
     }
@@ -60,7 +60,7 @@ tape('remove classes', t => {
 
 tape('set arbitrary props', t => {
   t.plan(1)
-  hg(body, {
+  hb(body, {
     $prop: {
       textContent: 'ok'
     }
@@ -70,7 +70,7 @@ tape('set arbitrary props', t => {
 
 tape('set elements', t => {
   t.plan(1)
-  hg(body, {
+  hb(body, {
     $element: document.createElement('input')
   })
   t.equal(body.firstElementChild.tagName, 'INPUT')
@@ -83,7 +83,7 @@ tape('permit nested queries', t => {
     <div class=c></div>
   </div>
 </div>`
-  hg(body, {
+  hb(body, {
     '.a': {
       '.b': {
         '.c': 'cool'
@@ -95,7 +95,7 @@ tape('permit nested queries', t => {
 
 tape('respect boundaries', t => {
   t.plan(1)
-  hg(body, {
+  hb(body, {
     '.c': 'snap'
   }, {
     boundary: '.a'
@@ -108,7 +108,7 @@ tape('render lists of primitives', t => {
 
   // initial render
   body.innerHTML = `<ul></ul>`
-  hg(body, {
+  hb(body, {
     ul: {
       $list: {
         items: [
@@ -129,7 +129,7 @@ tape('render lists of primitives', t => {
   ])
 
   // insert
-  hg(body, {
+  hb(body, {
     ul: {
       $list: {
         items: [
@@ -153,7 +153,7 @@ tape('render lists of primitives', t => {
   ])
 
   // remove
-  hg(body, {
+  hb(body, {
     ul: {
       $list: {
         items: [
@@ -180,13 +180,13 @@ tape('render lists of objects', t => {
 
   // initial render
   body.innerHTML = `<ul></ul>`
-  hg(body, {
+  hb(body, {
     ul: {
       $list: {
         key: 'uid',
         items: [
           { uid: 0, text: 'foo' },
-          { uid: 1, text: 'bar' },
+          { uid: 1, text: 'bar' }
         ],
         createElement: function (item) {
           var li = document.createElement('li')
@@ -204,14 +204,14 @@ tape('render lists of objects', t => {
   ])
 
   // insert
-  hg(body, {
+  hb(body, {
     ul: {
       $list: {
         key: 'uid',
         items: [
           { uid: 0, text: 'foo' },
           { uid: 2, text: 'baz' },
-          { uid: 1, text: 'bar' },
+          { uid: 1, text: 'bar' }
         ],
         createElement: function (item) {
           t.pass() // createElement should only be once for "baz"
@@ -231,7 +231,7 @@ tape('render lists of objects', t => {
   ])
 
   // remove
-  hg(body, {
+  hb(body, {
     ul: {
       $list: {
         key: 'uid',
