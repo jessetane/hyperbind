@@ -1,37 +1,28 @@
-# hyperbind
-[![npm](http://img.shields.io/npm/v/hyperbind.svg?style=flat)](http://npmjs.org/package/hyperbind)
+var hg = require('../')
 
-Create or update DOM elements by mapping query selectors to hypertext, plain text, attributes, classes, properties, other elements or lists.
-
-This libary is based on substack's excellent [hyperglue](https://github.com/substack/hyperglue), it adds some additional mapping mechanisms and diff-based list support that integrates naturally with [custom-elements](http://w3c.github.io/webcomponents/spec/custom).
-
-## Why
-Look ma, no virtual DOMs
-
-## How
-``` javascript
-var hb = require('hyperbind')
+// this just removes the script tag for aesthetics
+document.body.innerHTML = ''
 
 // compile html
-var div = hb('<div>')
+var div = hg('<div>')
 document.body.appendChild(div)
 console.log(document.body.outerHTML) // => <body><div></div></body>
 
+// plain text
+hg(div, {
+  $text: 'cool'
+})
+// shorthand: hg(div, 'cool')
+console.log(div.outerHTML) // => <div>cool</div>
+
 // hypertext
-hb(div, {
+hg(div, {
   $html: '<h1>hi</h1>'
 })
 console.log(div.outerHTML) // => <div><h1>hi</h1></div>
 
-// plain text
-hb(div, {
-  $text: 'cool'
-})
-// shorthand: hb(div, 'cool')
-console.log(div.outerHTML) // => <div>cool</div>
-
 // attributes
-hb(div, {
+hg(div, {
   $attr: {
     'my-attr': 42 // or null to remove
   }
@@ -39,7 +30,7 @@ hb(div, {
 console.log(div.outerHTML) // => <div my-attr="42"><h1>hi</h1></div>
 
 // classes
-hb(div, {
+hg(div, {
   $class: {
     'my-class': true // or falsy to remove
   }
@@ -48,7 +39,7 @@ console.log(div.outerHTML) // => <div my-attr="42" class="my-class"><h1>hi</h1><
 
 // properties
 document.body.innerHTML = '<input value=initial>'
-hb(document.body, {
+hg(document.body, {
   input: {
     $prop: {
       value: 'updated'
@@ -58,20 +49,20 @@ hb(document.body, {
 console.log(document.querySelector('input').value) // => updated
 
 // elements
-hb(document.body, {
+hg(document.body, {
   $element: document.createElement('ul')
 })
 console.log(document.body.outerHTML) // => <body><ul></ul></body>
 
 // lists of primitives
-hb(document.body, {
+hg(document.body, {
   ul: {
     $list: {
       items: [
         'foo',
         'bar'
       ],
-      createElement: function () {
+      createElement: function () { // note: createElement must be constructable for compatibility with custom elements
         return document.createElement('li')
       }
     }
@@ -80,7 +71,7 @@ hb(document.body, {
 console.log(document.body.outerHTML) // => <body><ul><li>foo</li><li>bar</li></ul></body>
 
 // lists of objects
-hb(document.body, {
+hg(document.body, {
   ul: {
     $list: {
       key: 'id',
@@ -98,7 +89,7 @@ hb(document.body, {
 })
 console.log(document.body.outerHTML) // => <body><ul><li>item #0: foo</li><li>item #1: bar</li></ul></body>
 
-// lists of objects (custom-element style)
+// lists of objects (using custom-elements)
 document.body.innerHTML = ''
 class Row extends HTMLElement {
   constructor (item, i) {
@@ -107,7 +98,7 @@ class Row extends HTMLElement {
   }
 }
 customElements.define('x-row', Row)
-hb(document.body, {
+hg(document.body, {
   $list: {
     key: 'id',
     items: [
@@ -118,17 +109,3 @@ hb(document.body, {
   }
 })
 console.log(document.body.outerHTML) // => <body><x-row>foo</x-row><x-row>bar</x-row></body>
-```
-
-## Example
-```
-$ npm run example
-```
-
-## Test
-```
-$ npm run test
-```
-
-## License
-MIT

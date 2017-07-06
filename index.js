@@ -1,206 +1,148 @@
-var domify = require('domify');
-var singletons = {}
+module.exports = hyperbind
 
-module.exports = hyperglue;
+var compiler = document.createElement('div')
 
-function hyperglue(el, data, opts) {
-  if (!opts) opts = {};
-
-  // if 'el' is an html string, turn it into dom elements
+function hyperbind (el, data, opts) {
+  if (!opts) opts = {}
   if (typeof el === 'string') {
-    el = domify(el);
+    compiler.innerHTML = el
+    el = compiler.firstElementChild
   }
-
-  // boundaries must be collected at the highest level possible
-  if (opts.boundary && typeof opts.boundary !== 'object') {
-    opts.boundary = el.querySelectorAll(opts.boundary);
-  }
-
-  // no data so we're done
-  if (data === undefined) return el;
-
-  // null should remove elements
-  if (data === null) {
+  if (data === undefined) {
+    return el
+  } else if (data === null) {
     if (el.parentNode) {
-      el.parentNode.removeChild(el);
+      el.parentNode.removeChild(el)
     }
-    return el;
-  }
-
-  // if data is an HTML element just replace whatever was there with it
-  if (data instanceof Element) {
+  } else if (data instanceof Element) {
     while (el.childNodes.length) {
-      el.removeChild(el.firstChild);
+      el.removeChild(el.firstChild)
     }
-    el.appendChild(data);
-  }
-
-  // elsewise assume other object types are hashes
-  else if (typeof data === 'object') {
-
-    // replace singletons if necessary
-    var cacheKey = data._single;
-    if (cacheKey) {
-      var cached = singletons[cacheKey];
-      if (cached && el !== cached) {
-        el.parentNode.insertBefore(cached, el);
-        el.parentNode.removeChild(el);
-        el = cached;
-      } else {
-        singletons[cacheKey] = el;
-      }
-    }
-
+    el.appendChild(data)
+  } else if (typeof data === 'object') {
     for (var selector in data) {
-
-      // skip singletons
-      if (selector === '_single') {
-        continue;
-      }
-
-      var value = data[selector];
-
-      // plain text
-      if (selector === '_text') {
-        el.textContent = value;
-      }
-
-      // raw html
-      else if (selector === '_html') {
-        el.innerHTML = value;
-      }
-
-      // value for form elements
-      else if (selector === '_value') {
-        el.value = value === undefined ? '' : value;
-      }
-
-      // dom element
-      else if (selector === '_element') {
-        while (el.childNodes.length) {
-          el.removeChild(el.firstChild);
-        }
-        el.appendChild(value);
-      }
-
-      // attribute setting
-      else if (selector === '_attr') {
-        for (var attr in value) {
-          var val = value[attr];
-          if (val === null || 
-              val === undefined) {
-            el.removeAttribute(attr);
+      var value = data[selector]
+      switch (selector) {
+        case '$text':
+          el.textContent = value
+          break
+        case '$html':
+          el.innerHTML = value
+          break
+        case '$attribute':
+        case '$attr':
+          for (var attr in value) {
+            var val = value[attr]
+            if (val === null || val === undefined) {
+              el.removeAttribute(attr)
+            } else if (el.getAttribute(attr) !== val) {
+              el.setAttribute(attr, val)
+            }
           }
-          else if (el.getAttribute(attr) !== val) {
-            el.setAttribute(attr, val);
+          break
+        case '$class':
+          for (var className in value) {
+            if (value[className]) {
+              el.classList.add(className)
+            } else {
+              el.classList.remove(className)
+            }
           }
-        }
-      }
-
-      // el.classList
-      else if (selector === '_class') {
-        var toAdd = []
-        var toRemove = []
-
-        for (var className in value) {
-          if (value[className]) {
-            toAdd.push(className)
-          } else {
-            toRemove.push(className)
+          break
+        case '$prop':
+          for (var prop in value) {
+            el[prop] = value[prop]
           }
-        }
-
-        for (var i in toAdd) {
-          el.classList.add(toAdd[i])
-        }
-
-        for (var i in toRemove) {
-          el.classList.remove(toRemove[i])
-        }
-      }
-
-      // generic properties
-      else if (selector === '_prop') {
-        for (var prop in value) {
-          el[prop] = value[prop];
-        }
-      }
-
-      // recursive
-      else {
-
-        // arrays need some extra setup so that they can be rendered
-        // multiple times without disturbing neighboring elements
-        var isArray = Array.isArray(value);
-        var needsCache = false;
-        var matches = null;
-        if (isArray) {
-          el._hyperglueArrays = el._hyperglueArrays || {};
-          matches = el._hyperglueArrays[selector];
-          if (!matches) {
-            el._hyperglueArrays[selector] = [];
-            needsCache = true;
+          break
+        case '$element':
+          while (el.childNodes.length) {
+            el.removeChild(el.firstChild)
           }
-        }
-
-        matches = matches || el.querySelectorAll(selector);
-        for (var i=0; i<matches.length; i++) {
-          var match = matches[i];
-
-          // make sure match is not beyond a boundary
-          if (opts.boundary) {
-            var withinBoundary = true;
-            for (var n=0; n<opts.boundary.length; n++) {
-              if (opts.boundary[n].contains(match)) {
-                withinBoundary = false;
-                break;
+          el.appendChild(value)
+          break
+        case '$list':
+          var items = value.items
+          var key = value.key
+          var createElement = value.createElement
+          var each = value.each
+          var children = el.children
+          var existing = {}
+          for (var i = 0; i < children.length; i++) {
+            var exists = false
+            var child = children[i]
+            var uid = key ? child._listItemKey : child.textContent
+            for (var n = 0; n < items.length; n++) {
+              var item = items[n]
+              if (key) {
+                if (item[key] === uid) {
+                  exists = true
+                  break
+                }
+              } else {
+                if (item === uid) {
+                  exists = true
+                  break
+                }
               }
             }
-            if (!withinBoundary) continue;
+            if (exists) {
+              existing[uid] = child
+            } else {
+              el.removeChild(child)
+              i--
+            }
           }
-
-          // render arrays
-          if (isArray) {
-
-            // in case the template contained multiple rows (we only use the first one)
-            if (!match.parentNode) continue;
-
-            // cache blueprint node
-            if (needsCache && needsCache !== match.parent) {
-              needsCache = match.parentNode;
-              el._hyperglueArrays[selector].push({
-                node: match.cloneNode(true),
-                parentNode: match.parentNode,
-                cloneNode: function() {
-                  return this.node.cloneNode(true);
+          for (var i = 0; i < items.length; i++) {
+            var item = items[i]
+            var uid = key ? item[key] : item
+            var existingChild = existing[uid]
+            if (!existingChild) {
+              existingChild = new createElement(item, i)
+              if (key) {
+                existingChild._listItemKey = uid
+              } else {
+                existingChild.textContent = item
+              }
+            }
+            var child = children[i]
+            if (child !== existingChild) {
+              el.insertBefore(existingChild, child)
+            }
+            if (each) {
+              each(existingChild, i)
+            }
+          }
+          break
+        default:
+          var matches = el.querySelectorAll(selector)
+          for (var i = 0; i < matches.length; i++) {
+            var match = matches[i]
+            if (opts.boundary) {
+              if (typeof opts.boundary !== 'object') {
+                opts.boundary = el.querySelectorAll(opts.boundary)
+              }
+              var withinBoundary = true
+              for (var n = 0; n < opts.boundary.length; n++) {
+                var boundary = opts.boundary[n]
+                var parent = match.parentNode
+                while (parent !== el && parent !== boundary) {
+                  parent = parent.parentNode
                 }
-              });
+                if (parent === boundary) {
+                  withinBoundary = false
+                  break
+                }
+              }
+              if (!withinBoundary) {
+                continue
+              }
             }
-
-            // remove any existing rows
-            var parent = match.parentNode;
-            while (parent.childNodes.length) {
-              parent.removeChild(parent.childNodes[0]);
-            }
-
-            // render new rows
-            for (var n=0; n<value.length; n++) {
-              var item = value[n];
-              parent.appendChild(hyperglue(match.cloneNode(true), item));
-            }
+            hyperbind(match, value, opts)
           }
-
-          // render non-arrays
-          else {
-            hyperglue(match, value);
-          }
-        }
       }
     }
-  }
-  else {
+  } else {
     el.textContent = data;
   }
-
-  return el;
-};
+  return el
+}

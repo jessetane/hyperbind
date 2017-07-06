@@ -1,22 +1,17 @@
 {
-  "name": "hyperglue2",
-  "version": "3.2.0",
-  "description": "A hyperglue implementation",
-  "dependencies": {
-    "domify": "^1.2.2"
+  "name": "hyperbind",
+  "version": "4.0.0",
+  "description": "Create or update DOM elements by mapping query selectors to hypertext, plain text, attributes, classes, properties, elements and lists.",
+  "scripts": {
+    "test": "cd test; watchify index.js -o build.js & ecstatic --port 7357 .",
+    "example": "cd example; watchify index.js -o build.js & ecstatic --port 8080 ."
   },
-  "keywords": [
-    "hyperglue",
-    "dom",
-    "reactive",
-    "render",
-    "html",
-    "templates"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jessetane/hyperglue2"
+  "devDependencies": {
+    "ecstatic": "^2.2.1",
+    "tape": "^4.6.3",
+    "watchify": "^3.9.0"
   },
-  "author": "Jesse Tane <jesse.tane@gmail.com>",
+  "repository": "https://github.com/jessetane/hyperbind",
+  "author": "jesse.tane@gmail.com",
   "license": "MIT"
 }
