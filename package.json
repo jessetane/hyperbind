@@ -1,6 +1,6 @@
 {
   "name": "hyperbind",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "description": "Create or update DOM elements by mapping query selectors to hypertext, plain text, attributes, classes, properties, elements and lists.",
   "scripts": {
     "test": "cd test; watchify index.js -o build.js & ecstatic --port 7357 .",
