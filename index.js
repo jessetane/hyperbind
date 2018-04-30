@@ -61,16 +61,17 @@ function hyperbind (el, data, opts) {
           el.appendChild(value)
           break
         case '$list':
-          var items = value.items
           var key = value.key
           var CreateElement = value.createElement
           var each = value.each
           var children = el.children
           var existing = {}
+          var items = value.items
+          if (!items) items = []
           for (var i = 0; i < children.length; i++) {
             var exists = false
             var child = children[i]
-            var uid = key ? child._listItemKey : child.textContent
+            var uid = key ? child.item[key] : child.textContent
             for (var n = 0; n < items.length; n++) {
               var item = items[n]
               if (key) {
@@ -96,10 +97,14 @@ function hyperbind (el, data, opts) {
             item = items[i]
             uid = key ? item[key] : item
             var existingChild = existing[uid]
-            if (!existingChild) {
+            if (existingChild) {
+              if (key) {
+                existingChild.item = item
+              }
+            } else {
               existingChild = new CreateElement(item, i)
               if (key) {
-                existingChild._listItemKey = uid
+                existingChild.item = item
               } else {
                 existingChild.textContent = item
               }
@@ -109,7 +114,7 @@ function hyperbind (el, data, opts) {
               el.insertBefore(existingChild, child)
             }
             if (each) {
-              each(existingChild, i)
+              each(existingChild, item, i)
             }
           }
           break

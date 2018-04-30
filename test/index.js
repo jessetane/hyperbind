@@ -115,7 +115,7 @@ tape('render lists of primitives', t => {
           'foo',
           'bar'
         ],
-        createElement: function (item) {
+        createElement: function () {
           return document.createElement('li')
         }
       }
@@ -137,7 +137,7 @@ tape('render lists of primitives', t => {
           'baz',
           'bar'
         ],
-        createElement: function (item) {
+        createElement: function () {
           t.pass() // createElement should only be once for "baz"
           return document.createElement('li')
         }
@@ -160,7 +160,7 @@ tape('render lists of primitives', t => {
           'foo',
           'baz'
         ],
-        createElement: function (item) {
+        createElement: function () {
           t.fail() // createElement should not be called
           return document.createElement('li')
         }
