@@ -158,5 +158,6 @@ function hyperbind (el, data, opts) {
   } else {
     el.textContent = data
   }
+  elements.delete(el)
   return el
 }
