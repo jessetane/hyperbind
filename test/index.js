@@ -255,3 +255,43 @@ tape('render lists of objects', t => {
     'baz'
   ])
 })
+
+tape('be reentrant', t => {
+  t.plan(1)
+
+  body.innerHTML = `<ul></ul>`
+
+  function render () {
+    hb(body, {
+      ul: {
+        $list: {
+          key: 'uid',
+          items: [
+            { uid: 0, text: 'foo' },
+            { uid: 1, text: 'bar' }
+          ],
+          createElement: function (item) {
+            var li = document.createElement('li')
+            li.textContent = item.text
+            return li
+          },
+          each: el => {
+            if (!el.initialized) {
+              el.initialized = true
+              render()
+            }
+          }
+        }
+      }
+    })
+  }
+
+  render()
+
+  t.deepEqual(Array.from(body.querySelectorAll('li')).map(el => {
+    return el.textContent
+  }), [
+    'foo',
+    'bar'
+  ])
+})
