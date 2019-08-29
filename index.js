@@ -1,6 +1,8 @@
 module.exports = hyperbind
 
 var compiler = document.createElement('div')
+var elements = new Map()
+var sessions = 0
 
 function hyperbind (el, data, opts) {
   if (!opts) opts = {}
@@ -8,15 +10,17 @@ function hyperbind (el, data, opts) {
     compiler.innerHTML = el
     el = compiler.firstElementChild
   }
-  if (data === undefined) {
-    return el
-  } else if (data === null) {
+  if (data === undefined) return el
+  var session = sessions++
+  elements.set(el, session)
+  if (data === null) {
     if (el.parentNode) {
       el.parentNode.removeChild(el)
     }
   } else if (data instanceof Element) {
     while (el.childNodes.length) {
       el.removeChild(el.firstChild)
+      if (elements.get(el) !== session) break
     }
     el.appendChild(data)
   } else if (typeof data === 'object') {
@@ -57,6 +61,7 @@ function hyperbind (el, data, opts) {
         case '$element':
           while (el.childNodes.length) {
             el.removeChild(el.firstChild)
+            if (elements.get(el) !== session) break
           }
           el.appendChild(value)
           break
@@ -90,6 +95,7 @@ function hyperbind (el, data, opts) {
               existing[uid] = child
             } else {
               el.removeChild(child)
+              if (elements.get(el) !== session) break
               i--
             }
           }
@@ -112,9 +118,11 @@ function hyperbind (el, data, opts) {
             child = children[i]
             if (child !== existingChild) {
               el.insertBefore(existingChild, child)
+              if (elements.get(el) !== session) break
             }
             if (each) {
               each(existingChild, item, i)
+              if (elements.get(el) !== session) break
             }
           }
           break
@@ -143,6 +151,7 @@ function hyperbind (el, data, opts) {
               }
             }
             hyperbind(match, value, opts)
+            if (elements.get(el) !== session) break
           }
       }
     }
