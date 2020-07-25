@@ -74,7 +74,7 @@ function hyperbind (el, data, opts) {
           for (var i = 0; i < children.length; i++) {
             var exists = false
             var child = children[i]
-            var uid = key ? child.item[key] : child.textContent
+            var uid = key ? child.item && child.item[key] : child.textContent
             for (var n = 0; n < items.length; n++) {
               var item = items[n]
               if (key) {
