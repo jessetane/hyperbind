@@ -3,13 +3,12 @@
   "version": "5.1.1",
   "description": "Create or update DOM elements by mapping query selectors to hypertext, plain text, attributes, classes, properties, elements and lists.",
   "scripts": {
-    "test": "cd test; watchify index.js -o build.js & ecstatic --port 7357 .",
-    "example": "cd example; watchify index.js -o build.js & ecstatic --port 8080 ."
+    "test-browser": "PORT=7357 ROOT=test app-server",
+    "example": "ROOT=example app-server"
   },
   "devDependencies": {
-    "ecstatic": "^2.2.1",
-    "tape": "^4.6.3",
-    "watchify": "^3.9.0"
+    "app-server": "github:jessetane/app-server#4.1.1",
+    "tap-esm": "^1.1.0"
   },
   "repository": "https://github.com/jessetane/hyperbind",
   "author": "jesse.tane@gmail.com",

@@ -1,27 +1,12 @@
-# hyperbind
-[![npm](http://img.shields.io/npm/v/hyperbind.svg?style=flat)](http://npmjs.org/package/hyperbind)
+import hb from './index.js'
 
-Create or update DOM elements by mapping query selectors to hypertext, plain text, attributes, classes, properties, other elements or lists.
-
-This libary is based on substack's excellent [hyperglue](https://github.com/substack/hyperglue), it adds some additional mapping mechanisms and diff-based list support that integrates naturally with [custom-elements](http://w3c.github.io/webcomponents/spec/custom).
-
-## Why
-Look ma, no virtual DOMs
-
-## How
-``` javascript
-import hb from 'hyperbind/index.js'
+// this just removes the script tag for aesthetics
+document.body.innerHTML = ''
 
 // compile html
 var div = hb('<div>')
 document.body.appendChild(div)
 console.log(document.body.outerHTML) // => <body><div></div></body>
-
-// hypertext
-hb(div, {
-  $html: '<h1>hi</h1>'
-})
-console.log(div.outerHTML) // => <div><h1>hi</h1></div>
 
 // plain text
 hb(div, {
@@ -29,6 +14,12 @@ hb(div, {
 })
 // shorthand: hb(div, 'cool')
 console.log(div.outerHTML) // => <div>cool</div>
+
+// hypertext
+hb(div, {
+  $html: '<h1>hi</h1>'
+})
+console.log(div.outerHTML) // => <div><h1>hi</h1></div>
 
 // attributes
 hb(div, {
@@ -71,7 +62,7 @@ hb(document.body, {
         'foo',
         'bar'
       ],
-      createElement: function () {
+      createElement: function () { // note: createElement must be constructable for compatibility with custom elements
         return document.createElement('li')
       }
     }
@@ -98,7 +89,7 @@ hb(document.body, {
 })
 console.log(document.body.outerHTML) // => <body><ul><li>item #0: foo</li><li>item #1: bar</li></ul></body>
 
-// lists of objects (custom-element style)
+// lists of objects (using custom-elements)
 document.body.innerHTML = ''
 class Row extends HTMLElement {
   constructor (item, i) {
@@ -118,17 +109,3 @@ hb(document.body, {
   }
 })
 console.log(document.body.outerHTML) // => <body><x-row>foo</x-row><x-row>bar</x-row></body>
-```
-
-## Example
-```
-$ npm run example
-```
-
-## Test
-```
-$ npm run test
-```
-
-## License
-MIT

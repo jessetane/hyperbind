@@ -1,5 +1,3 @@
-module.exports = hyperbind
-
 var compiler = document.createElement('div')
 var elements = new Map()
 var sessions = 0
@@ -161,3 +159,5 @@ function hyperbind (el, data, opts) {
   elements.delete(el)
   return el
 }
+
+export default hyperbind
