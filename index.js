@@ -67,7 +67,8 @@ function hyperbind (el, data, opts) {
           var key = value.key
           var CreateElement = value.createElement
           var each = value.each
-          var children = el.children
+          var empty = value.empty
+          var children = el.childNodes
           var existing = {}
           var items = value.items
           if (!items) items = []
@@ -122,6 +123,9 @@ function hyperbind (el, data, opts) {
               each(existingChild, item, i)
               if (elements.get(el) !== session) break
             }
+          }
+          if (items.length === 0 && empty) {
+            hyperbind(el, empty)
           }
           break
         default:
