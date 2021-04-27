@@ -104,10 +104,24 @@ tap('respect boundaries', t => {
 })
 
 tap('render lists of primitives', t => {
-  t.plan(4)
+  t.plan(6)
+  body.innerHTML = `<ul></ul>`
 
   // initial render
-  body.innerHTML = `<ul></ul>`
+  hb(body, {
+    ul: {
+      $list: {
+        items: [],
+        empty: 'No items',
+        createElement: function () {
+          return document.createElement('li')
+        }
+      }
+    }
+  })
+  t.arrayEqual(body.querySelector('ul').innerHTML, 'No items')
+
+  // first content
   hb(body, {
     ul: {
       $list: {
@@ -115,6 +129,7 @@ tap('render lists of primitives', t => {
           'foo',
           'bar'
         ],
+        empty: 'No items',
         createElement: function () {
           return document.createElement('li')
         }
@@ -137,6 +152,7 @@ tap('render lists of primitives', t => {
           'baz',
           'bar'
         ],
+        empty: 'No items',
         createElement: function () {
           t.pass() // createElement should only be once for "baz"
           return document.createElement('li')
@@ -160,6 +176,7 @@ tap('render lists of primitives', t => {
           'foo',
           'baz'
         ],
+        empty: 'No items',
         createElement: function () {
           t.fail() // createElement should not be called
           return document.createElement('li')
@@ -173,13 +190,45 @@ tap('render lists of primitives', t => {
     'foo',
     'baz'
   ])
+
+  // empty
+  hb(body, {
+    ul: {
+      $list: {
+        items: [],
+        empty: 'No items',
+        createElement: function () {
+          t.fail() // createElement should not be called
+          return document.createElement('li')
+        }
+      }
+    }
+  })
+  t.arrayEqual(body.querySelector('ul').innerHTML, 'No items')
 })
 
 tap('render lists of objects', t => {
-  t.plan(4)
+  t.plan(6)
+  body.innerHTML = `<ul></ul>`
 
   // initial render
-  body.innerHTML = `<ul></ul>`
+  hb(body, {
+    ul: {
+      $list: {
+        key: 'uid',
+        items: [],
+        empty: 'No items',
+        createElement: function (item) {
+          var li = document.createElement('li')
+          li.textContent = item.text
+          return li
+        }
+      }
+    }
+  })
+  t.arrayEqual(body.querySelector('ul').innerHTML, 'No items')
+
+  // first content
   hb(body, {
     ul: {
       $list: {
@@ -188,6 +237,7 @@ tap('render lists of objects', t => {
           { uid: 0, text: 'foo' },
           { uid: 1, text: 'bar' }
         ],
+        empty: 'No items',
         createElement: function (item) {
           var li = document.createElement('li')
           li.textContent = item.text
@@ -213,6 +263,7 @@ tap('render lists of objects', t => {
           { uid: 2, text: 'baz' },
           { uid: 1, text: 'bar' }
         ],
+        empty: 'No items',
         createElement: function (item) {
           t.pass() // createElement should only be once for "baz"
           var li = document.createElement('li')
@@ -239,6 +290,7 @@ tap('render lists of objects', t => {
           { uid: 0, text: 'foo' },
           { uid: 2, text: 'baz' }
         ],
+        empty: 'No items',
         createElement: function (item) {
           t.fail() // createElement should not be called
           var li = document.createElement('li')
@@ -254,6 +306,26 @@ tap('render lists of objects', t => {
     'foo',
     'baz'
   ])
+
+  // empty
+  hb(body, {
+    ul: {
+      $list: {
+        key: 'uid',
+        items: [],
+        empty: {
+          $html: '<b>No items</b>'
+        },
+        createElement: function (item) {
+          t.fail() // createElement should not be called
+          var li = document.createElement('li')
+          li.textContent = item.text
+          return li
+        }
+      }
+    }
+  })
+  t.arrayEqual(body.querySelector('ul').innerHTML, '<b>No items</b>')
 })
 
 tap('be reentrant', t => {
