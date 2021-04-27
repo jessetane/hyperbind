@@ -1,6 +1,6 @@
 {
   "name": "hyperbind",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "description": "Create or update DOM elements by mapping query selectors to hypertext, plain text, attributes, classes, properties, elements and lists.",
   "scripts": {
     "test-browser": "PORT=7357 ROOT=test app-server",
