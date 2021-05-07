@@ -51,6 +51,8 @@ function hyperbind (el, data, opts) {
             }
           }
           break
+        case '$value':
+          value = { value }
         case '$prop':
           for (var prop in value) {
             el[prop] = value[prop]
