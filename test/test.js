@@ -3,6 +3,16 @@ import tap from './tap-esm/index.js'
 
 var body = document.body
 
+tap('compile', t => {
+  t.plan(3)
+  let el = hb('<div><h1>wow</h1></div>')
+  t.equal(el.outerHTML, '<div><h1>wow</h1></div>')
+  el = hb('<div><h1>wow</h1></div>', null)
+  t.equal(el.outerHTML, '<div><h1>wow</h1></div>')
+  el = hb('<div><h1>wow</h1></div>', undefined)
+  t.equal(el.outerHTML, '<div></div>')
+})
+
 tap('set text', t => {
   t.plan(2)
   hb(body, 'hello world')
