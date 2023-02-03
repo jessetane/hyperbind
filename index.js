@@ -7,6 +7,7 @@ function hyperbind (el, data, opts) {
   if (typeof el === 'string') {
     compiler.innerHTML = el
     el = compiler.firstElementChild
+    el.remove()
   }
   if (data === undefined) {
     if (arguments.length === 1) return el
