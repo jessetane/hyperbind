@@ -4,9 +4,11 @@ import tap from './tap-esm/index.js'
 var body = document.body
 
 tap('set text', t => {
-  t.plan(1)
+  t.plan(2)
   hb(body, 'hello world')
   t.equal(body.textContent, 'hello world')
+  hb(body, undefined)
+  t.equal(body.textContent, '')
 })
 
 tap('set html', t => {
