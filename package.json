@@ -3,11 +3,11 @@
   "version": "6.2.0",
   "description": "Create or update DOM elements by mapping query selectors to hypertext, plain text, attributes, classes, properties, elements and lists.",
   "scripts": {
-    "test-browser": "PORT=7357 ROOT=test app-server",
-    "example": "ROOT=example app-server"
+    "test": "ecstatic --cache no-cache --port 7357 test",
+    "example": "ecstatic --cache no-cache --port 8080 example"
   },
   "devDependencies": {
-    "app-server": "github:jessetane/app-server#4.1.1",
+    "ecstatic": "^4.1.4",
     "tap-esm": "^1.1.0"
   },
   "repository": "https://github.com/jessetane/hyperbind",
