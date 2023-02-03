@@ -1,12 +1,15 @@
 import hb from './index.js'
 
-// this just removes the script tag for aesthetics
-document.body.innerHTML = ''
-
 // compile html
 var div = hb('<div>')
 document.body.appendChild(div)
 console.log(document.body.outerHTML) // => <body><div></div></body>
+
+// hypertext
+hb(div, {
+  $html: '<h1>hi</h1>'
+})
+console.log(div.outerHTML) // => <div><h1>hi</h1></div>
 
 // plain text
 hb(div, {
@@ -14,12 +17,6 @@ hb(div, {
 })
 // shorthand: hb(div, 'cool')
 console.log(div.outerHTML) // => <div>cool</div>
-
-// hypertext
-hb(div, {
-  $html: '<h1>hi</h1>'
-})
-console.log(div.outerHTML) // => <div><h1>hi</h1></div>
 
 // attributes
 hb(div, {
@@ -62,7 +59,8 @@ hb(document.body, {
         'foo',
         'bar'
       ],
-      createElement: function () { // note: createElement must be constructable for compatibility with custom elements
+      empty: 'No items', // optional placeholder for when there are no items
+      createElement: function () {
         return document.createElement('li')
       }
     }
@@ -79,6 +77,9 @@ hb(document.body, {
         { id: 0, data: 'foo' },
         { id: 1, data: 'bar' }
       ],
+      empty: {
+        $html: `<b>No items</b>` // empty option is a recursive hyperbind
+      },
       createElement: function (item, i) {
         var li = document.createElement('li')
         li.textContent = `item #${i}: ${item.data}`
@@ -89,7 +90,7 @@ hb(document.body, {
 })
 console.log(document.body.outerHTML) // => <body><ul><li>item #0: foo</li><li>item #1: bar</li></ul></body>
 
-// lists of objects (using custom-elements)
+// lists of objects (custom-element style)
 document.body.innerHTML = ''
 class Row extends HTMLElement {
   constructor (item, i) {
