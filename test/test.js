@@ -80,12 +80,12 @@ tap('set arbitrary props', t => {
   t.equal(body.textContent, 'ok')
 })
 
-tap('set elements', t => {
-  t.plan(1)
-  hb(body, {
-    $element: document.createElement('input')
-  })
+tap('set/remove elements', t => {
+  t.plan(2)
+  hb(body, document.createElement('input'))
   t.equal(body.firstElementChild.tagName, 'INPUT')
+  hb(body, { input: null })
+  t.equal(body.innerHTML, '')
 })
 
 tap('permit nested queries', t => {

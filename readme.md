@@ -58,10 +58,10 @@ hb(document.body, {
 console.log(document.querySelector('input').value) // => updated
 
 // elements
-hb(document.body, {
-  $element: document.createElement('ul')
-})
+hb(document.body, document.createElement('ul'))
 console.log(document.body.outerHTML) // => <body><ul></ul></body>
+hb(document.body, { ul: null })
+console.log(document.body.outerHTML) // => <body></body>
 
 // lists of primitives
 hb(document.body, {

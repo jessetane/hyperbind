@@ -61,13 +61,6 @@ function hyperbind (el, data, opts) {
             el[prop] = value[prop]
           }
           break
-        case '$element':
-          while (el.childNodes.length) {
-            el.removeChild(el.firstChild)
-            if (elements.get(el) !== session) break
-          }
-          el.appendChild(value)
-          break
         case '$list':
           var key = value.key
           var CreateElement = value.createElement
