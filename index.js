@@ -8,7 +8,10 @@ function hyperbind (el, data, opts) {
     compiler.innerHTML = el
     el = compiler.firstElementChild
   }
-  if (data === undefined) return el
+  if (data === undefined) {
+    if (arguments.length === 1) return el
+    data = ''
+  }
   var session = sessions++
   elements.set(el, session)
   if (data === null) {
