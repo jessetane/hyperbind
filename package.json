@@ -1,6 +1,6 @@
 {
   "name": "hyperbind",
-  "version": "7.0.1",
+  "version": "7.1.0",
   "description": "Create or update DOM elements by mapping query selectors to hypertext, plain text, attributes, classes, properties, elements and lists.",
   "scripts": {
     "test": "ecstatic --cache no-cache --port 7357 test",
