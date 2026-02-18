@@ -72,9 +72,7 @@ hb(document.body, {
         'bar'
       ],
       empty: 'No items', // optional placeholder for when there are no items
-      createElement: function () {
-        return document.createElement('li')
-      }
+      createElement: () => document.createElement('li')
     }
   }
 })
@@ -92,7 +90,7 @@ hb(document.body, {
       empty: {
         $html: `<b>No items</b>` // empty option is a recursive hyperbind
       },
-      createElement: function (item, i) {
+      createElement: (item, i) => {
         var li = document.createElement('li')
         li.textContent = `item #${i}: ${item.data}`
         return li

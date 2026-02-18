@@ -106,7 +106,9 @@ function hyperbind (el, data, opts) {
                 existingChild.item = item
               }
             } else {
-              existingChild = new CreateElement(item, i)
+              existingChild = CreateElement.prototype
+                ? new CreateElement(item, i)
+                : CreateElement(item, i)
               if (key) {
                 existingChild.item = item
               } else {

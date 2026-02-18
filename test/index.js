@@ -125,9 +125,7 @@ tap('render lists of primitives', t => {
       $list: {
         items: [],
         empty: 'No items',
-        createElement: function () {
-          return document.createElement('li')
-        }
+        createElement: () => document.createElement('li')
       }
     }
   })
@@ -142,9 +140,7 @@ tap('render lists of primitives', t => {
           'bar'
         ],
         empty: 'No items',
-        createElement: function () {
-          return document.createElement('li')
-        }
+        createElement: document.createElement.bind(document, 'li')
       }
     }
   })
@@ -189,7 +185,7 @@ tap('render lists of primitives', t => {
           'baz'
         ],
         empty: 'No items',
-        createElement: function () {
+        createElement: () => {
           t.fail() // createElement should not be called
           return document.createElement('li')
         }
@@ -209,7 +205,7 @@ tap('render lists of primitives', t => {
       $list: {
         items: [],
         empty: 'No items',
-        createElement: function () {
+        createElement: () => {
           t.fail() // createElement should not be called
           return document.createElement('li')
         }
@@ -230,7 +226,7 @@ tap('render lists of objects', t => {
         key: 'uid',
         items: [],
         empty: 'No items',
-        createElement: function (item) {
+        createElement: item => {
           var li = document.createElement('li')
           li.textContent = item.text
           return li
@@ -250,7 +246,7 @@ tap('render lists of objects', t => {
           { uid: 1, text: 'bar' }
         ],
         empty: 'No items',
-        createElement: function (item) {
+        createElement: item => {
           var li = document.createElement('li')
           li.textContent = item.text
           return li
@@ -276,7 +272,7 @@ tap('render lists of objects', t => {
           { uid: 1, text: 'bar' }
         ],
         empty: 'No items',
-        createElement: function (item) {
+        createElement: item => {
           t.pass() // createElement should only be once for "baz"
           var li = document.createElement('li')
           li.textContent = item.text
@@ -303,7 +299,7 @@ tap('render lists of objects', t => {
           { uid: 2, text: 'baz' }
         ],
         empty: 'No items',
-        createElement: function (item) {
+        createElement: item => {
           t.fail() // createElement should not be called
           var li = document.createElement('li')
           li.textContent = item.text
@@ -328,7 +324,7 @@ tap('render lists of objects', t => {
         empty: {
           $html: '<b>No items</b>'
         },
-        createElement: function (item) {
+        createElement: item => {
           t.fail() // createElement should not be called
           var li = document.createElement('li')
           li.textContent = item.text
@@ -354,7 +350,7 @@ tap('be reentrant', t => {
             { uid: 0, text: 'foo' },
             { uid: 1, text: 'bar' }
           ],
-          createElement: function (item) {
+          createElement: item => {
             var li = document.createElement('li')
             li.textContent = item.text
             return li
